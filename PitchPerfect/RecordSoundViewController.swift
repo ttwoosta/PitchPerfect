@@ -51,11 +51,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         // get document dir path
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as! String
         
-        // sound file's path formatted as date-time of record
-        //let currentDateTime = NSDate()
-        //let formatter = NSDateFormatter()
-        //formatter.dateFormat = "ddMMyyyy-HHmmss"
-        //let recordingName = formatter.stringFromDate(currentDateTime) + ".wav"
+        // Default record name
         let pathArray = [dirPath, "recordedVoice.wav"]
         let filePath = NSURL.fileURLWithPathComponents(pathArray)
         println(filePath)
