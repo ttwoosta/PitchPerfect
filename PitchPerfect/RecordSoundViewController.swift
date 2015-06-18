@@ -19,18 +19,29 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     
     var recordedAudio: RecordAudio!
     
+    /////////////////////////
+    // Recording state
+    /////////////////////////
+    
     var isRecording: Bool = false {
         didSet {
-            
             self.stopButton.hidden = !isRecording
             self.recordButton.enabled = !isRecording
             self.recordLabel.text = isRecording ? "Recording in progress" : "Tap to record"
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        println("\(self) viewDidLoad")
+    /////////////////////////
+    // Overrided funcs
+    /////////////////////////
+    
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         self.isRecording = false
     }
     
@@ -42,6 +53,31 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         }
     }
 
+    /////////////////////////
+    // <AVAudioRecorderDelegate>
+    /////////////////////////
+    
+    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder!, successfully flag: Bool) {
+        if (flag) {
+            recordedAudio = RecordAudio(filePathURL: recorder.url)
+            self.performSegueWithIdentifier("playSound", sender: self)
+        }
+        else {
+            println("Recording was not successfully")
+            var alert = UIAlertView(title: "Recorder is stopped",
+                message: "Recoding was not successfully",
+                delegate: nil,
+                cancelButtonTitle: nil)
+            alert.show()
+        }
+        
+        self.isRecording = false
+    }
+    
+    /////////////////////////
+    // Action methods
+    /////////////////////////
+    
     @IBAction func recordAction(sender: AnyObject) {
         if (self.isRecording) {
             return
@@ -68,46 +104,20 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         audioRecorder.record()
     }
     
-    func audioRecorderDidFinishRecording(recorder: AVAudioRecorder!, successfully flag: Bool) {
-        if (flag) {
-            recordedAudio = RecordAudio(filePathURL: recorder.url)
-            self.performSegueWithIdentifier("playSound", sender: self)
-        }
-        else {
-            println("Recording was not successfully")
-        }
-        
-        self.isRecording = false
-    }
-    
-    
     @IBAction func stopAction(sender: AnyObject) {
         audioRecorder.stop()
         var audioSession = AVAudioSession.sharedInstance()
         audioSession.setActive(false, error: nil)
     }
+
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        println("\(self) viewWillAppear")
-    }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        println("\(self) viewDidAppear")
-    }
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        println("\(self) viewWillDisappear")
-    }
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        println("\(self) viewDidDisappear")
-    }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+    
+    
+    
+    
+    
+    
     
 }
 
