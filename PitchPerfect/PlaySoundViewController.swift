@@ -103,7 +103,7 @@ class PlaySoundViewController: UIViewController {
     }
     
     @IBAction func stopAction(sender: AnyObject) {
-        self.audioPlayer.stop()
+        self.audioEngineReset()
     }
 
     
