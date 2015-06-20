@@ -10,19 +10,19 @@ import UIKit
 import AVFoundation
 
 class PlaySoundViewController: UIViewController {
-
     
-    @IBOutlet weak var slowButton: UIButton!
+    var recordedAudio: RecordAudio!
+    var audioFile: AVAudioFile!
     
     var audioPlayer: AVAudioPlayer!
-    var recordedAudio: RecordAudio!
-    
     var audioEngine: AVAudioEngine!
-    var audioFile: AVAudioFile!
+    
+    /////////////////////////
+    // Overrided funcs
+    /////////////////////////
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        println("\(self) viewDidLoad")
         
         //let URL = NSBundle.mainBundle().URLForResource("movie_quote.mp3", withExtension: nil);
         assert(self.recordedAudio != nil, "Mp3 file cannot be found")
@@ -36,40 +36,15 @@ class PlaySoundViewController: UIViewController {
         audioFile = AVAudioFile(forReading: recordedAudio.filePathURL, error: nil)
     }
     
+    /////////////////////////
+    // Shared funcs
+    /////////////////////////
+    
     func audioEngineReset() {
         audioPlayer.stop()
         audioEngine.stop()
         audioEngine.reset()
         self.audioPlayer.currentTime = 0
-    }
-    
-    @IBAction func slowAction(sender: AnyObject) {
-        audioEngineReset()
-        
-        self.audioPlayer.rate = 0.5
-        self.audioPlayer.play()
-    }
-    
-    @IBAction func fastAction(sender: AnyObject) {
-        audioEngineReset()
-        
-        self.audioPlayer.rate = 2.0
-        self.audioPlayer.play()
-    }
-    
-    @IBAction func stopAction(sender: AnyObject) {
-        
-        self.audioPlayer.stop()
-        
-    }
-
-    @IBAction func playChipmunkAudio(sender: AnyObject) {
-        playAudioWithVariablePitch(1000)
-    }
-    
-    
-    @IBAction func playDarthvaderAudio(sender: AnyObject) {
-        playAudioWithVariablePitch(-1000)
     }
     
     func playAudioWithVariablePitch(pitch: Float) {
@@ -100,27 +75,36 @@ class PlaySoundViewController: UIViewController {
         // play audio
         audioPlayerNode.play()
     }
+
+    /////////////////////////
+    // Action methods
+    /////////////////////////
     
-    
-    @IBAction func popVC(sender: AnyObject) {
-        self.navigationController!.popViewControllerAnimated(true)
+    @IBAction func slowAction(sender: AnyObject) {
+        audioEngineReset()
+        
+        self.audioPlayer.rate = 0.5
+        self.audioPlayer.play()
     }
     
+    @IBAction func fastAction(sender: AnyObject) {
+        audioEngineReset()
+        
+        self.audioPlayer.rate = 2.0
+        self.audioPlayer.play()
+    }
     
-    override func viewWillAppear(animated: Bool) {
-        super.viewWillAppear(animated)
-        println("\(self) viewWillAppear")
+    @IBAction func playChipmunkAudio(sender: AnyObject) {
+        playAudioWithVariablePitch(1000)
     }
-    override func viewDidAppear(animated: Bool) {
-        super.viewDidAppear(animated)
-        println("\(self) viewDidAppear")
+    
+    @IBAction func playDarthvaderAudio(sender: AnyObject) {
+        playAudioWithVariablePitch(-1000)
     }
-    override func viewWillDisappear(animated: Bool) {
-        super.viewWillDisappear(animated)
-        println("\(self) viewWillDisappear")
+    
+    @IBAction func stopAction(sender: AnyObject) {
+        self.audioPlayer.stop()
     }
-    override func viewDidDisappear(animated: Bool) {
-        super.viewDidDisappear(animated)
-        println("\(self) viewDidDisappear")
-    }
+
+    
 }

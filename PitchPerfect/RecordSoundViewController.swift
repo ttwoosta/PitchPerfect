@@ -9,14 +9,17 @@
 import UIKit
 import AVFoundation
 
-var audioRecorder:AVAudioRecorder!
 
 class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
-
+    
+    // retain audio recorder
+    var audioRecorder:AVAudioRecorder!
+    
     @IBOutlet weak var recordLabel: UILabel!
     @IBOutlet weak var stopButton: UIButton!
     @IBOutlet weak var recordButton: UIButton!
     
+    // recorded audio
     var recordedAudio: RecordAudio!
     
     /////////////////////////
@@ -65,7 +68,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
         else {
             println("Recording was not successfully")
             var alert = UIAlertView(title: "Recorder is stopped",
-                message: "Recoding was not successfully",
+                message: "Recording was not successfully",
                 delegate: nil,
                 cancelButtonTitle: nil)
             alert.show()
@@ -79,9 +82,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     /////////////////////////
     
     @IBAction func recordAction(sender: AnyObject) {
-        if (self.isRecording) {
-            return
-        }
+        // Recording in progress
         self.isRecording = true
         
         // get document dir path
