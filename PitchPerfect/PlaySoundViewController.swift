@@ -25,12 +25,12 @@ class PlaySoundViewController: UIViewController {
         super.viewDidLoad()
         
         //let URL = NSBundle.mainBundle().URLForResource("movie_quote.mp3", withExtension: nil);
-        assert(self.recordedAudio != nil, "Mp3 file cannot be found")
+        assert(recordedAudio != nil, "Mp3 file cannot be found")
         
         var error: NSError?
-        self.audioPlayer = AVAudioPlayer(contentsOfURL: self.recordedAudio.filePathURL, error: &error)
+        audioPlayer = AVAudioPlayer(contentsOfURL: recordedAudio.filePathURL, error: &error)
         assert(error == nil, "Error occurs: \(error)")
-        self.audioPlayer.enableRate = true
+        audioPlayer.enableRate = true
         
         audioEngine = AVAudioEngine()
         audioFile = AVAudioFile(forReading: recordedAudio.filePathURL, error: nil)
@@ -41,10 +41,13 @@ class PlaySoundViewController: UIViewController {
     /////////////////////////
     
     func audioEngineReset() {
-        audioPlayer.stop()
+        // stop audio engine
         audioEngine.stop()
         audioEngine.reset()
-        self.audioPlayer.currentTime = 0
+        
+        // stop audio player
+        audioPlayer.stop()
+        audioPlayer.currentTime = 0
     }
     
     func playAudioWithVariablePitch(pitch: Float) {
@@ -83,15 +86,15 @@ class PlaySoundViewController: UIViewController {
     @IBAction func slowAction(sender: AnyObject) {
         audioEngineReset()
         
-        self.audioPlayer.rate = 0.5
-        self.audioPlayer.play()
+        audioPlayer.rate = 0.5
+        audioPlayer.play()
     }
     
     @IBAction func fastAction(sender: AnyObject) {
         audioEngineReset()
         
-        self.audioPlayer.rate = 2.0
-        self.audioPlayer.play()
+        audioPlayer.rate = 2.0
+        audioPlayer.play()
     }
     
     @IBAction func playChipmunkAudio(sender: AnyObject) {
@@ -103,7 +106,7 @@ class PlaySoundViewController: UIViewController {
     }
     
     @IBAction func stopAction(sender: AnyObject) {
-        self.audioEngineReset()
+        audioEngineReset()
     }
 
     

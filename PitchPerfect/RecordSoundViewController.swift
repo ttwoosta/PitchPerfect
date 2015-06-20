@@ -28,9 +28,9 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     
     var isRecording: Bool = false {
         didSet {
-            self.stopButton.hidden = !isRecording
-            self.recordButton.enabled = !isRecording
-            self.recordLabel.text = isRecording ? "Recording in progress" : "Tap to record"
+            stopButton.hidden = !isRecording
+            recordButton.enabled = !isRecording
+            recordLabel.text = isRecording ? "Recording in progress" : "Tap to record"
         }
     }
     
@@ -45,14 +45,14 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.isRecording = false
+        isRecording = false
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         super.prepareForSegue(segue, sender: sender)
         if (segue.identifier == "playSound") {
             let psvc: PlaySoundViewController = segue.destinationViewController as! PlaySoundViewController
-            psvc.recordedAudio = self.recordedAudio
+            psvc.recordedAudio = recordedAudio
         }
     }
 
@@ -74,7 +74,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
             alert.show()
         }
         
-        self.isRecording = false
+        isRecording = false
     }
     
     /////////////////////////
@@ -83,7 +83,7 @@ class RecordSoundViewController: UIViewController, AVAudioRecorderDelegate {
     
     @IBAction func recordAction(sender: AnyObject) {
         // Recording in progress
-        self.isRecording = true
+        isRecording = true
         
         // get document dir path
         let dirPath = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true).first as! String
